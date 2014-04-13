@@ -306,10 +306,11 @@ endif
 inoremap <C-BS> <C-W>
 " map control-delete to delete the next word
 inoremap <C-Del> <C-O>de
-" easier paste in insert mode
+" easier paste in insert mode (+ is clipboard, " is yank, * is primary select)
 " http://vim.wikia.com/wiki/Replace_a_word_with_yanked_text
-inoremap <A-D> <C-R>"
-inoremap <A-V> <C-R>+
+inoremap <A-d> <C-R>"
+inoremap <A-v> <C-R>+
+vnoremap <A-c> "+y
 vnoremap P "0p
 " another solution:
 " http://superuser.com/questions/321547/how-do-i-replace-paste-yanked-text-in-vim-without-yanking-the-deleted-lines
