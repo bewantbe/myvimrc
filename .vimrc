@@ -313,7 +313,6 @@ inoremap <A-V> <C-R>+
 vnoremap P "0p
 " another solution:
 " http://superuser.com/questions/321547/how-do-i-replace-paste-yanked-text-in-vim-without-yanking-the-deleted-lines
-"vnoremap <leader>p "_dP
 
 " map Shift + Arrows to select characters
 " http://stackoverflow.com/questions/9721732/mapping-shift-arrows-to-selecting-characters-lines
