@@ -319,7 +319,7 @@ vnoremap P "0p
 " http://stackoverflow.com/questions/9721732/mapping-shift-arrows-to-selecting-characters-lines
 imap <S-Left> <Esc>v
 vmap <S-Left> h
-imap <S-Right> <Esc>v
+imap <S-Right> <Esc><Right>v
 vmap <S-Right> l
 
 imap <S-Up> <Esc>v
