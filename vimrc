@@ -308,7 +308,7 @@ inoremap <C-BS> <C-W>
 inoremap <C-Del> <C-O>de
 " easier paste in insert mode
 " http://vim.wikia.com/wiki/Replace_a_word_with_yanked_text
-inoremap <C-V> <C-R>"
+inoremap <A-D> <C-R>"
 inoremap <A-V> <C-R>+
 vnoremap P "0p
 " another solution:
