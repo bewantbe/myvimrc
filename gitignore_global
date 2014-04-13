@@ -1,0 +1,4 @@
+# see also https://help.github.com/articles/ignoring-files
+# ignore backup files
+*~
+.*.swp
