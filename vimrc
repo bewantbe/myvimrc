@@ -310,7 +310,7 @@ inoremap <C-Del> <C-O>de
 " http://vim.wikia.com/wiki/Replace_a_word_with_yanked_text
 inoremap <A-d> <C-R>"
 inoremap <A-v> <C-R>+
-vnoremap <A-c> "+y
+vnoremap <A-v> "+y
 vnoremap P "0p
 " another solution:
 " http://superuser.com/questions/321547/how-do-i-replace-paste-yanked-text-in-vim-without-yanking-the-deleted-lines
