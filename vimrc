@@ -97,6 +97,7 @@ if has("autocmd")
   Bundle 'gmarik/vundle'
 
   Bundle 'Valloric/YouCompleteMe'
+  Bundle 'thinca/vim-localrc'
 
   " read identifiers from my tags files
   " note Ctags needs to be called with the --fields=+l option
@@ -175,6 +176,12 @@ endif
 " Accessing GNU Octave info 
 " when editing a *.m file, you can type K in normal mode and the word under the cursor will be searched for in the GNU Octave documentation index
 autocmd FileType matlab setlocal keywordprg=info\ octave\ --vi-keys\ --index-search
+
+" this cost about 0.1 sec, which is bad...
+"let octavempath = system('octave -qf --eval fprintf\([OCTAVE_HOME\ \"/share/\"\ OCTAVE_VERSION\ \"/m/*\"]\)')
+"autocmd FileType matlab let &path .= ',' . octavempath
+
+autocmd FileType matlab set path+=/usr/share/octave/3.6.2/m/*
 
 " key map for runing octave script
 nnoremap <silent> <F5> :<C-u>Update<CR>:silent :!/home/xyy/.vim/octave_run_cmd.sh %<CR><C-L>
@@ -310,7 +317,7 @@ inoremap <C-Del> <C-O>de
 " http://vim.wikia.com/wiki/Replace_a_word_with_yanked_text
 inoremap <A-d> <C-R>"
 inoremap <A-v> <C-R>+
-vnoremap <A-c> "+y
+vnoremap <A-v> "+y
 vnoremap P "0p
 " another solution:
 " http://superuser.com/questions/321547/how-do-i-replace-paste-yanked-text-in-vim-without-yanking-the-deleted-lines
