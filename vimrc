@@ -89,37 +89,30 @@ if has("autocmd")
   " https://github.com/gmarik/vundle#about
   filetype off                   " required!
 
-  set rtp+=~/.vim/bundle/vundle/
-  call vundle#rc()
+  set rtp+=~/.vim/bundle/Vundle.vim
+  call vundle#begin()
 
   " let Vundle manage Vundle
   " required! 
-  Bundle 'gmarik/vundle'
+  Plugin 'gmarik/Vundle.vim'
 
-  Bundle 'Valloric/YouCompleteMe'
+  Plugin 'Valloric/YouCompleteMe'
+  " Plugin 'thinca/vim-localrc'
 
-  " read identifiers from my tags files
-  " note Ctags needs to be called with the --fields=+l option
-  let g:ycm_collect_identifiers_from_tags_files = 1
+  "Plugin 'scrooloose/syntastic'
 
-  "Bundle 'scrooloose/syntastic'
+  call vundle#end()            " required
+  filetype plugin indent on    " required
 
   "
   " Brief help
-  " :BundleList          - list configured bundles
-  " :BundleInstall(!)    - install(update) bundles
-  " :BundleSearch(!) foo - search(or refresh cache first) for foo
-  " :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
+  " :PluginList       - lists configured plugins
+  " :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+  " :PluginSearch foo - searches for foo; append `!` to refresh local cache
+  " :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
   "
   " see :h vundle for more details or wiki for FAQ
-  " NOTE: comments after Bundle command are not allowed..
-
-
-  " Enable file type detection.
-  " Use the default filetype settings, so that mail gets 'tw' set to 72,
-  " 'cindent' is on in C files, etc.
-  " Also load indent files, to automatically do language-dependent indenting.
-  filetype plugin indent on
+  " Put your non-Plugin stuff after this line
 
   " use ctrlp.vim, see http://kien.github.io/ctrlp.vim/#installation
   set runtimepath^=~/.vim/bundle/ctrlp.vim
@@ -127,9 +120,6 @@ if has("autocmd")
   " Put these in an autocmd group, so that we can delete them easily.
   augroup vimrcEx
   au!
-
-  " For all text files set 'textwidth' to 78 characters.
-  "autocmd FileType text setlocal textwidth=78
 
   " When editing a file, always jump to the last known cursor position.
   " Don't do it when the position is invalid or when inside an event handler
@@ -148,6 +138,13 @@ else
   set autoindent		" always set autoindenting on
 
 endif " has("autocmd")
+
+
+" YCM settings
+" read identifiers from my tags files
+" note Ctags needs to be called with the --fields=+l option
+let g:ycm_collect_identifiers_from_tags_files = 1
+
 
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
@@ -175,6 +172,12 @@ endif
 " Accessing GNU Octave info 
 " when editing a *.m file, you can type K in normal mode and the word under the cursor will be searched for in the GNU Octave documentation index
 autocmd FileType matlab setlocal keywordprg=info\ octave\ --vi-keys\ --index-search
+
+" this cost about 0.1 sec, which is bad...
+"let octavempath = system('octave -qf --eval fprintf\([OCTAVE_HOME\ \"/share/\"\ OCTAVE_VERSION\ \"/m/*\"]\)')
+"autocmd FileType matlab let &path .= ',' . octavempath
+
+autocmd FileType matlab set path+=/usr/share/octave/3.6.2/m/*
 
 " key map for runing octave script
 nnoremap <silent> <F5> :<C-u>Update<CR>:silent :!/home/xyy/.vim/octave_run_cmd.sh %<CR><C-L>
