@@ -70,14 +70,19 @@ ${color grey} Down:$color ${downspeed \1} ${goto 280}${color grey}    Up:$color 
 ${color grey}${downspeedgraph \1 60,260 5b00f6 f5a322} $alignr${color grey}${upspeedgraph \1 60,260 5b00f6 f5a322}
 $endif]],
     
-    template1 = [[AP: ${wireless_essid \1} (${wireless_link_qual \1}/${wireless_link_qual_max \1})]],
-    
-    template2 = [[
+    template1 = [[
 ${if_up \1}${color grey}Interface: \1
  AP: ${wireless_essid \1} (${wireless_link_qual \1}/${wireless_link_qual_max \1})
 ${color grey} Down:$color ${downspeed \1} ${goto 280}${color grey}    Up:$color ${upspeed \1}
 ${color grey}${downspeedgraph \1 60,260 5b00f6 f5a322} $alignr${color grey}${upspeedgraph \1 60,260 5b00f6 f5a322}
 $endif]],
+    
+    template3 = [[${color}\1  ${color grey}${fs_bar 8,220 \2}  $color${alignr}${fs_used \2} / ${fs_size \2}]],
+    
+    template6 = [[${\1    64,260 4b45ff fc6f6f -t}]],
+    template7 = [[${\1 \2 64,260 4b45ff fc6f6f -t}]],
+    template8 = [[${\1    60,260 5b00f6 f5a322}]],
+    template9 = [[${\1 \2 60,260 5b00f6 f5a322}]],
     
 --    lua_load = '~/myfunction.lua',
 }
@@ -97,11 +102,11 @@ ${color grey}Frequency:$color ${freq_g 1} ${freq_g 2} ${freq_g 3} ${freq_g 4} ${
 ${color grey}CPU Usage:$color $cpu% ${cpubar 8}
 ${color}RAM${color grey} :$color ${membar  8,220} $memperc% $alignr$mem/$memmax
 ${color grey}Swap:$color ${swapbar 8,220} $swapperc% $alignr$swap/$swapmax
-${color grey}${cpugraph 64,260 4b45ff fc6f6f -t} $alignr${memgraph 64,260 4b45ff fc6f6f -t}
+${color grey}${template6 cpugraph} $alignr${template6 memgraph}
 ${color}GPU${color grey}: Core: util $color${nvidia gpuutil}%${color grey}, temp $color${nvidia gputemp}C${color grey} @ $color${nvidia gpufreqcur} MHz
 ${color grey}     Mem :$color ${nvidia memused} MiB / ${nvidia memmax} MiB${color grey} @ $color${nvidia memfreqcur} MHz
 ${color grey}     Video: util $color${nvidia videoutil}%${color grey}; power $color${exec /usr/bin/nvidia-smi --query-gpu=power.draw --format=csv,noheader}
-${color grey}${nvidiagraph gpuutil 64,260 4b45ff fc6f6f -t} $alignr${nvidiagraph memused 64,260 4b45ff fc6f6f -t}
+${color grey}${template7 nvidiagraph gpuutil} $alignr${template7 nvidiagraph memused}
 $hr
 ${color}Top processes:
 ${color grey}Processes:$color $processes  ${color grey}Running:$color $running_processes
@@ -115,14 +120,14 @@ ${color lightgrey} ${top_mem name 2} ${top_mem pid 2} ${top_mem cpu 2} ${top_mem
 ${color lightgrey} ${top_mem name 3} ${top_mem pid 3} ${top_mem cpu 3} ${top_mem mem 3}
 $hr
 ${color}File systems:
- /     $color ${fs_bar 8,220 /}  ${fs_used /}/${fs_size /}
- /home $color ${fs_bar 8,220 /home}  ${fs_used /home}/${fs_size /home}
- DATAe $color ${fs_bar 8,220 /mnt/data_ext/}  ${fs_used /mnt/data_ext/}/${fs_size /mnt/data_ext/}
+ ${template3 /____ /}
+ ${template3 /home /home}
+ ${template3 DATAe /mnt/data_ext/}
 ${color grey} Disk Read: $color${diskio_read}  ${goto 280}${color grey}  Write: $color${diskio_write}
-${color grey}${diskiograph_read 60,260 5b00f6 f5a322} $alignr${color grey}${diskiograph_write 60,260 5b00f6 f5a322}
+${color grey}${template8 diskiograph_read} $alignr${color grey}${template8 diskiograph_write}
 $hr
 ${color}Network: ${color grey}IP $gw_ip $iface
-${template2 wlp4s0}\
+${template1 wlp4s0}\
 ${template0 eno1}\
 ${template0 enx1222417ac39c}\
 ${template0 wwan0}\
