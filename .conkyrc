@@ -56,32 +56,54 @@ conky.config = {
     show_graph_range = false,
     show_graph_scale = true,
     stippled_borders = 0,
+    top_cpu_separate = true,
     top_name_width = 20,
     update_interval = 2.0,
     uppercase = false,
     use_spacer = 'left',
     use_xft = true,
+    if_up_strictness = 'address',
+    
+    template0 = [[
+${if_up \1}${color grey}Interface: \1
+${color grey} Down:$color ${downspeed \1} ${goto 280}${color grey}    Up:$color ${upspeed \1}
+${color grey}${downspeedgraph \1 60,260 5b00f6 f5a322} $alignr${color grey}${upspeedgraph \1 60,260 5b00f6 f5a322}
+$endif]],
+    
+    template1 = [[AP: ${wireless_essid \1} (${wireless_link_qual \1}/${wireless_link_qual_max \1})]],
+    
+    template2 = [[
+${if_up \1}${color grey}Interface: \1
+ AP: ${wireless_essid \1} (${wireless_link_qual \1}/${wireless_link_qual_max \1})
+${color grey} Down:$color ${downspeed \1} ${goto 280}${color grey}    Up:$color ${upspeed \1}
+${color grey}${downspeedgraph \1 60,260 5b00f6 f5a322} $alignr${color grey}${upspeedgraph \1 60,260 5b00f6 f5a322}
+$endif]],
+    
+--    lua_load = '~/myfunction.lua',
 }
 
---Version for LEGION R9000P (a.k.a. LEGION 5 Pro) with Linux 5.18
+--Version for LEGION R9000P (a.k.a. LEGION 5 Pro) with Linux 5.18~6.1
 
 conky.text = [[
-$nodename - $sysname $kernel
-${nvidia modelname} - ${nvidia driverversion}
+$nodename ${color grey}- $sysname $kernel
+${color grey}${nvidia modelname} - ${nvidia driverversion}
 ${color grey}Uptime:$color $uptime ${color grey}
 $hr
-${color grey}Battery: $color $battery_short $battery_percent %, ${exec echo "$(cat /sys/class/power_supply/BAT0/energy_now)/1000000" | bc -l | cut -c1-4} Wh / ${exec echo "$(cat /sys/class/power_supply/BAT0/power_now)/1000000" | bc -l | cut -c1-4} W
+${color grey}Battery: $color ${exec echo "$(cat /sys/class/power_supply/BAT0/power_now)/1000000" | bc -l | cut -c1-4} ${color grey} W / $color${exec echo "$(cat /sys/class/power_supply/BAT0/energy_now)/1000000" | bc -l | cut -c1-4} ${color grey}Wh ($color$battery_short $battery_percent ${color grey}%)
 ${color grey}LCD: $color${cat /sys/class/backlight/nvidia_0/actual_brightness} / ${cat /sys/class/backlight/nvidia_0/max_brightness}
+$hr
+${color}CPU${color grey} Temp: $color${hwmon k10temp temp 1}C${color grey}; nvmeSS: $color${hwmon 1 temp 2}C${color grey}, nvmeWD: $color${hwmon 2 temp 2}C${color grey}
 ${color grey}Frequency:$color ${freq_g 1} ${freq_g 2} ${freq_g 3} ${freq_g 4} ${color grey}GHz
-${color grey}CPU Temp: $color${hwmon 4 temp 1}C${color grey}; nvme1: $color${hwmon 1 temp 1}C${color grey}, nvme2: $color${hwmon 2 temp 1}C${color grey}
-${color grey}RAM :$color ${membar  8,220} $memperc% $alignr$mem/$memmax
-${color grey}Swap:$color ${swapbar 8,220} $swapperc% $alignr$swap/$swapmax
 ${color grey}CPU Usage:$color $cpu% ${cpubar 8}
+${color}RAM${color grey} :$color ${membar  8,220} $memperc% $alignr$mem/$memmax
+${color grey}Swap:$color ${swapbar 8,220} $swapperc% $alignr$swap/$swapmax
 ${color grey}${cpugraph 64,260 4b45ff fc6f6f -t} $alignr${memgraph 64,260 4b45ff fc6f6f -t}
-${color grey}GPU: Core: util $color${nvidia gpuutil}%${color grey}, temp $color${nvidia gputemp}C${color grey} @ $color${nvidia gpufreqcur} MHz
+${color}GPU${color grey}: Core: util $color${nvidia gpuutil}%${color grey}, temp $color${nvidia gputemp}C${color grey} @ $color${nvidia gpufreqcur} MHz
 ${color grey}     Mem :$color ${nvidia memused} MiB / ${nvidia memmax} MiB${color grey} @ $color${nvidia memfreqcur} MHz
 ${color grey}     Video: util $color${nvidia videoutil}%${color grey}; power $color${exec /usr/bin/nvidia-smi --query-gpu=power.draw --format=csv,noheader}
 ${color grey}${nvidiagraph gpuutil 64,260 4b45ff fc6f6f -t} $alignr${nvidiagraph memused 64,260 4b45ff fc6f6f -t}
+$hr
+${color}Top processes:
 ${color grey}Processes:$color $processes  ${color grey}Running:$color $running_processes
 ${color slate grey}Highest CPU:             PID     CPU%   MEM%
 ${color   #ddaa00} ${top name 1} ${top pid 1} ${top cpu 1} ${top mem 1}
@@ -92,21 +114,17 @@ ${color   #ddaa00} ${top_mem name 1} ${top_mem pid 1} ${top_mem cpu 1} ${top_mem
 ${color lightgrey} ${top_mem name 2} ${top_mem pid 2} ${top_mem cpu 2} ${top_mem mem 2}
 ${color lightgrey} ${top_mem name 3} ${top_mem pid 3} ${top_mem cpu 3} ${top_mem mem 3}
 $hr
-
-${color grey}File systems:
+${color}File systems:
  /     $color ${fs_bar 8,220 /}  ${fs_used /}/${fs_size /}
  /home $color ${fs_bar 8,220 /home}  ${fs_used /home}/${fs_size /home}
- DATAe $color ${fs_bar 8,220 /mnt/nvme-WD_Blue_SN570_2TB_SSD_223457800997-part2/}  ${fs_used /mnt/nvme-WD_Blue_SN570_2TB_SSD_223457800997-part2/}/${fs_size /mnt/nvme-WD_Blue_SN570_2TB_SSD_223457800997-part2/}
+ DATAe $color ${fs_bar 8,220 /mnt/data_ext/}  ${fs_used /mnt/data_ext/}/${fs_size /mnt/data_ext/}
 ${color grey} Disk Read: $color${diskio_read}  ${goto 280}${color grey}  Write: $color${diskio_write}
 ${color grey}${diskiograph_read 60,260 5b00f6 f5a322} $alignr${color grey}${diskiograph_write 60,260 5b00f6 f5a322}
-${if_up wlp4s0}\
-${color grey}Networking: ${wireless_essid wlp4s0} (${wireless_link_qual wlp4s0}/${wireless_link_qual_max wlp4s0})
-${color grey} wlp2s0: Down:$color ${downspeed wlp4s0} ${goto 280}${color grey}    Up:$color ${upspeed wlp4s0}
-${color grey}${downspeedgraph wlp4s0 60,260 5b00f6 f5a322} $alignr${color grey}${upspeedgraph wlp4s0 60,260 5b00f6 f5a322}
-$endif\
-${if_up eno1}\
-${color grey}Networking: eno1
-${color grey} ef1: Down:$color ${downspeed eno1} ${goto 280}${color grey}    Up:$color ${upspeed eno1}
-${color grey}${downspeedgraph eno1 60,260 5b00f6 f5a322} $alignr${color grey}${upspeedgraph eno1 60,260 5b00f6 f5a322}
-$endif\
+$hr
+${color}Network: ${color grey}IP $gw_ip $iface
+${template2 wlp4s0}\
+${template0 eno1}\
+${template0 enx1222417ac39c}\
+${template0 wwan0}\
+${template0 wwx2a0361f446b2}\
 ]]
