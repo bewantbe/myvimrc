@@ -94,12 +94,12 @@ $nodename ${color grey}- $sysname $kernel
 ${color grey}${nvidia modelname} - ${nvidia driverversion}
 ${color grey}Uptime:$color $uptime ${color grey}
 $hr
-${color grey}Battery: $color ${exec echo "$(cat /sys/class/power_supply/BAT0/power_now)/1000000" | bc -l | cut -c1-4} ${color grey} W / $color${exec echo "$(cat /sys/class/power_supply/BAT0/energy_now)/1000000" | bc -l | cut -c1-4} ${color grey}Wh ($color$battery_short $battery_percent ${color grey}%)
+${color grey}Battery: ${exec cat /sys/class/power_supply/BAT0/status} $color${exec echo "$(cat /sys/class/power_supply/BAT0/power_now)/1000000" | bc -l | cut -c1-4} ${color grey} W / $color${exec echo "$(cat /sys/class/power_supply/BAT0/energy_now)/1000000" | bc -l | cut -c1-4} ${color grey}Wh ($color$battery_percent ${color grey}%)
 ${color grey}LCD: $color${cat /sys/class/backlight/nvidia_0/actual_brightness} / ${cat /sys/class/backlight/nvidia_0/max_brightness}
 $hr
-${color}CPU${color grey} Temp: $color${hwmon k10temp temp 1}C${color grey}; nvmeSS: $color${hwmon 1 temp 2}C${color grey}, nvmeWD: $color${hwmon 2 temp 2}C${color grey}
+${color}CPU ${color grey}Usage:$color $cpu% ${cpubar 8}
 ${color grey}Frequency:$color ${freq_g 1} ${freq_g 2} ${freq_g 3} ${freq_g 4} ${color grey}GHz
-${color grey}CPU Usage:$color $cpu% ${cpubar 8}
+${color grey}CPU Temp: $color${hwmon k10temp temp 1}C${color grey}; nvmeSS: $color${hwmon 1 temp 2}C${color grey}, nvmeWD: $color${hwmon 2 temp 2}C${color grey}
 ${color}RAM${color grey} :$color ${membar  8,220} $memperc% $alignr$mem/$memmax
 ${color grey}Swap:$color ${swapbar 8,220} $swapperc% $alignr$swap/$swapmax
 ${color grey}${template6 cpugraph} $alignr${template6 memgraph}
@@ -131,5 +131,5 @@ ${template1 wlp4s0}\
 ${template0 eno1}\
 ${template0 enx1222417ac39c}\
 ${template0 wwan0}\
-${template0 wwx2a0361f446b2}\
+${template0 wwx0a33f53ef3c0}\
 ]]
